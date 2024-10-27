@@ -13,11 +13,11 @@ let obstacleSpeed = 5;
 function jump() {
     if (!isJumping) {
         isJumping = true;
-        player.style.bottom = "100px";
+        player.style.bottom = "100px"; // Lompatan
         setTimeout(() => {
-            player.style.bottom = "10px";
+            player.style.bottom = "10px"; // Kembali ke posisi awal
             isJumping = false;
-        }, 300);
+        }, 300); // Durasi lompatan
     }
 }
 
@@ -37,12 +37,12 @@ function startObstacleMovement() {
 
         // Reset posisi rintangan
         if (obstaclePosition >= 600) {
-            obstacle.style.right = "0px";
+            obstacle.style.right = "0px"; // Kembali ke posisi awal
             score++;
-            scoreDisplay.innerText = "Score: " + score;
+            scoreDisplay.innerText = "Score: " + score; // Update skor
             obstacleSpeed += 0.5; // Meningkatkan kecepatan setiap kali rintangan melintasi layar
         }
-    }, 50);
+    }, 50); // Interval gerakan
 }
 
 // Fungsi deteksi tabrakan
@@ -61,47 +61,47 @@ function detectCollision(player, obstacle) {
 function shoot() {
     if (!isShooting) {
         isShooting = true;
-        bullet.style.display = "block";
-        bullet.style.left = "80px";
+        bullet.style.display = "block"; // Tampilkan peluru
+        bullet.style.left = "80px"; // Posisi awal peluru
 
         const moveBullet = setInterval(() => {
             let bulletPosition = parseInt(bullet.style.left);
-            bullet.style.left = bulletPosition + 10 + "px";
+            bullet.style.left = bulletPosition + 10 + "px"; // Gerakan peluru ke kanan
 
             // Deteksi tabrakan antara peluru dan rintangan
             if (detectCollision(bullet, obstacle)) {
-                obstacle.style.right = "0px";
-                bullet.style.display = "none";
-                score += 5; // Tambah skor jika menembak rintangan
-                scoreDisplay.innerText = "Score: " + score;
+                obstacle.style.right = "0px"; // Reset rintangan
+                bullet.style.display = "none"; // Sembunyikan peluru
+                score += 5; // Tambah skor
+                scoreDisplay.innerText = "Score: " + score; // Update skor
                 clearInterval(moveBullet);
                 isShooting = false;
             }
 
-            if (bulletPosition >= 600) {
-                bullet.style.display = "none";
+            if (bulletPosition >= 600) { // Jika peluru keluar dari layar
+                bullet.style.display = "none"; // Sembunyikan peluru
                 clearInterval(moveBullet);
                 isShooting = false;
             }
-        }, 20);
+        }, 20); // Kecepatan peluru
     }
 }
 
 // Fungsi untuk mereset permainan
 function resetGame() {
-    score = 0;
-    obstacleSpeed = 5;
-    scoreDisplay.innerText = "Score: " + score;
-    obstacle.style.right = "0px";
+    score = 0; // Reset skor
+    obstacleSpeed = 5; // Reset kecepatan rintangan
+    scoreDisplay.innerText = "Score: " + score; // Update tampilan skor
+    obstacle.style.right = "0px"; // Reset posisi rintangan
 }
 
 // Event listener untuk tombol lompat dan menembak
 document.addEventListener("keydown", (e) => {
-    if (e.code === "Space") jump();
+    if (e.code === "Space") jump(); // Tombol spasi untuk melompat
 });
 
-shootButton.addEventListener("click", shoot);
+shootButton.addEventListener("click", shoot); // Tombol tembak
 
 // Mulai gerakan rintangan
 startObstacleMovement();
-                
+    
