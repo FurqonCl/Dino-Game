@@ -2,10 +2,12 @@ const player = document.getElementById("player");
 const obstacle = document.getElementById("obstacle");
 const bullet = document.getElementById("bullet");
 const shootButton = document.getElementById("shootButton");
+const scoreDisplay = document.getElementById("score");
 
 let isJumping = false;
 let isShooting = false;
-let isInvincible = false;
+let score = 0;
+let obstacleSpeed = 5;
 
 // Fungsi untuk melompat
 function jump() {
@@ -14,9 +16,7 @@ function jump() {
         player.style.bottom = "100px";
         setTimeout(() => {
             player.style.bottom = "10px";
-            setTimeout(() => {
-                isJumping = false;
-            }, 300);
+            isJumping = false;
         }, 300);
     }
 }
@@ -26,18 +26,21 @@ function startObstacleMovement() {
     obstacle.style.right = "0px";
     const moveObstacle = setInterval(() => {
         let obstaclePosition = parseInt(obstacle.style.right);
-        obstacle.style.right = obstaclePosition + 5 + "px";
+        obstacle.style.right = obstaclePosition + obstacleSpeed + "px";
 
         // Deteksi tabrakan
-        if (!isInvincible && detectCollision(player, obstacle)) {
-            alert("Game Over!");
-            obstacle.style.right = "0px";
+        if (detectCollision(player, obstacle)) {
+            alert("Game Over! Skor Akhir: " + score);
+            resetGame();
             clearInterval(moveObstacle);
         }
 
         // Reset posisi rintangan
         if (obstaclePosition >= 600) {
             obstacle.style.right = "0px";
+            score++;
+            scoreDisplay.innerText = "Score: " + score;
+            obstacleSpeed += 0.5; // Meningkatkan kecepatan setiap kali rintangan melintasi layar
         }
     }, 50);
 }
@@ -69,6 +72,8 @@ function shoot() {
             if (detectCollision(bullet, obstacle)) {
                 obstacle.style.right = "0px";
                 bullet.style.display = "none";
+                score += 5; // Tambah skor jika menembak rintangan
+                scoreDisplay.innerText = "Score: " + score;
                 clearInterval(moveBullet);
                 isShooting = false;
             }
@@ -82,19 +87,21 @@ function shoot() {
     }
 }
 
-// Fungsi kebal
-function toggleInvincibility() {
-    isInvincible = !isInvincible;
-    player.style.backgroundColor = isInvincible ? "#00FF00" : "#007BFF";
+// Fungsi untuk mereset permainan
+function resetGame() {
+    score = 0;
+    obstacleSpeed = 5;
+    scoreDisplay.innerText = "Score: " + score;
+    obstacle.style.right = "0px";
 }
 
-// Event listener untuk tombol lompat dan kebal
+// Event listener untuk tombol lompat dan menembak
 document.addEventListener("keydown", (e) => {
     if (e.code === "Space") jump();
-    if (e.code === "KeyI") toggleInvincibility();
 });
 
 shootButton.addEventListener("click", shoot);
 
 // Mulai gerakan rintangan
 startObstacleMovement();
+                
