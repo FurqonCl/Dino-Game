@@ -20,6 +20,7 @@ body {
     border: 2px solid #333;
     background-color: #e0f7fa;
     overflow: hidden;
+    margin-top: 20px;
 }
 
 #player {
@@ -50,6 +51,14 @@ body {
     height: 5px;
     background-color: #000;
     display: none;
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: #333;
 }
 
 #shootButton {
